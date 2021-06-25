@@ -17,20 +17,45 @@ int MostrarMenu()
 {
 	int respuestaMenu;
 
-	printf("\n1) Suma [A+B]\n");
-	printf("2) Resta [A-B]\n");
-	printf("3) Division [A/B]\n");
-	printf("4) Multiplicacion [A*B]\n");
-	printf("5) Factorial [A!] [B!]\n");
-	printf("6) Salir\n");
-	scanf("%d",&respuestaMenu);
-	while (respuestaMenu < 1 || respuestaMenu > 6)
+	printf("\n1. Ingresar 1er operando (A=x)\n");
+	printf("2. Ingresar 2do operando (B=y)\n");
+	printf("3. Calcular todas las operaciones\n"
+			"	a) Calcular la suma (A+B)\n"
+			"	b) Calcular la resta (A-B)\n"
+			"	c) Calcular la division (A/B)\n"
+			"	d) Calcular la multiplicacion (A*B)\n"
+			"	e) Calcular el factorial (A!)\n");
+	printf("4. Informar resultados\n"
+			"	a) “Resultado de A+B”\n"
+			"	b) “Resultado de A-B”\n"
+			"	c) “Resultado de A/B“\n"
+			"	d) “Resultado de A*B\n"
+			"	e) “Factorial de A y B\n");
+	printf("5. Salir\n");
+	respuestaMenu = getInt("Ingrese una opción: ");
+	while (respuestaMenu < 1 || respuestaMenu > 5)
 	{
-		printf("Ingrese una opción válida: ");
-		scanf("%d",&respuestaMenu);
+		respuestaMenu = getInt("Ingrese una opción válida: ");
 	}
 
 	return respuestaMenu;
+}
+
+/**
+ * @fn int getInt(char[])
+ * @brief Obtiene un int sin límites
+ *
+ * @param mensaje
+ * @return int ingresado por el usuario
+ */
+int getInt(char mensaje[])
+{
+	int respuesta;
+
+	printf(mensaje);
+	scanf("%d",&respuesta);
+
+	return respuesta;
 }
 
 /**
@@ -40,13 +65,13 @@ int MostrarMenu()
  * @param numeroA
  * @param numeroB
  */
-void SumaOperandos(int numeroA, int numeroB)
+int SumaOperandos(int numeroA, int numeroB)
 {
 	int resultado;
 
 	resultado = numeroA + numeroB;
 
-	printf("\nEl resultado de la suma es: %d\n", resultado);
+	return resultado;
 }
 
 /**
@@ -56,13 +81,13 @@ void SumaOperandos(int numeroA, int numeroB)
  * @param numeroA
  * @param numeroB
  */
-void RestaOperandos(int numeroA, int numeroB)
+int RestaOperandos(int numeroA , int numeroB)
 {
 	int resultado;
 
 	resultado = numeroA - numeroB;
 
-	printf("\nEl resultado de la resta es: %d\n", resultado);
+	return resultado;
 }
 
 /**
@@ -72,22 +97,13 @@ void RestaOperandos(int numeroA, int numeroB)
  * @param numeroA
  * @param numeroB
  */
-void DivisionOperandos(int numeroA , int numeroB)
+float DivisionOperandos(int numeroA , int numeroB)
 {
 	float resultado;
 
-	if (numeroB == 0)
-	{
+	resultado = (numeroA + 0.0) / numeroB;
 
-		printf("\nNo se puede dividir por 0.\n");
-
-	}	else	{
-
-		resultado = numeroA / numeroB;
-
-		printf("\nEl resultado de la division es: %f\n", resultado);
-
-	}
+	return resultado;
 }
 
 /**
@@ -97,13 +113,13 @@ void DivisionOperandos(int numeroA , int numeroB)
  * @param numeroA
  * @param numeroB
  */
-void MultiplicacionOperandos(int numeroA , int numeroB)
+int MultiplicacionOperandos(int numeroA , int numeroB)
 {
 	int resultado;
 
 	resultado = numeroA * numeroB;
 
-	printf("\nEl resultado de la multiplicacion es: %d\n", resultado);
+	return resultado;
 }
 
 /**
@@ -113,42 +129,69 @@ void MultiplicacionOperandos(int numeroA , int numeroB)
  * @param numeroA
  * @param numeroB
  */
-void FactorialOperandos(int numeroA , int numeroB)
+long int FactorialOperandos(int numero)
 {
 	int i;
-	long resultado;
+	long int resultado = 1;
 
-	resultado = 1;
-
-	//Factorial del operandoA
-	if (numeroA < 0)
+	if (numero <= 0)
 	{
-		printf("\nEl operando A es negativo, no se puede sacar el factorial de un número negativo.\n");
+
+		resultado = -1;
 
 	}	else	{
 
-		for(i=1 ; i<=numeroA ; i++)
+		if(numero == 0)
+		{
+			resultado = 0;
+		}	else	{
+			for(i=1 ; i<=numero ; i++)
 			{
 				resultado = resultado * i;
 			}
+		}
 
-		printf("\nFactorial del operando A[%d]: %ld\n", numeroA , resultado);
 	}
 
-	resultado = 1;
+	return resultado;
+}
 
-	//Factorial del operandoB
-	if (numeroB < 0)
-		{
-			printf("\nEl operando B es negativo, no se puede sacar el factorial de un número negativo.\n");
+void imprimirResultados(int suma,int resta,float division,int multiplicacion,long int factorialA,long int factorialB)
+{
+	printf("\nEl resultado de A+B es: %d\n",suma);
+	printf("El resultado de A-B es: %d\n",resta);
+	printf("El resultado de A/B es: %.2f\n",division);
+	printf("El resultado de A*B es: %d\n",multiplicacion);
+	if(factorialA == -1)
+	{
+		printf("No se puede obtener el factorial de A porque A = 0\n");
+	}	else	{
+		printf("El factorial de A es: %ld\n",factorialA);
+	}
+	if(factorialB == -1)
+	{
+		printf("No se puede obtener el factorial de B porque B = 0\n");
+	}	else	{
+		printf("El factorial de B es: %ld\n",factorialB);
+	}
+}
 
-		}	else	{
-
-			for(i=1 ; i<=numeroB ; i++)
-				{
-					resultado = resultado * i;
-				}
-
-			printf("\nFactorial del operando B[%d]: %ld\n", numeroB , resultado);
-		}
+void imprimirResultadosSinDivision(int suma,int resta,int multiplicacion,long int factorialA,long int factorialB)
+{
+	printf("\nEl resultado de A+B es: %d\n",suma);
+	printf("El resultado de A-B es: %d\n",resta);
+	printf("No se puede dividir porque el operando B es igual a 0\n");
+	printf("El resultado de A*B es: %d\n",multiplicacion);
+	if(factorialA == -1)
+	{
+		printf("No se puede obtener el factorial de A porque A = 0\n");
+	}	else	{
+		printf("El factorial de A es: %ld\n",factorialA);
+	}
+	if(factorialB == -1)
+	{
+		printf("No se puede obtener el factorial de B porque B = 0\n");
+	}	else	{
+		printf("El factorial de B es: %ld\n",factorialB);
+	}
 }

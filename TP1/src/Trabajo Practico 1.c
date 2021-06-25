@@ -29,12 +29,6 @@
 #include <stdlib.h>
 #include "funciones.h"
 
-#define SUMA 1
-#define RESTA 2
-#define DIVISION 3
-#define MULTIPLICACION 4
-#define FACTORIAL 5
-
 /**
  * @fn int main(void)
  * @brief Funcion principal, aquí se ingresarán los operandos y se
@@ -48,44 +42,73 @@
 int main(void) {
 
 	setbuf(stdout, NULL);
+	int respuestaMenu;
+	//Operandos
 	int numeroA;
 	int numeroB;
-	int respuestaMenu;
+	int numeroAingresado = -1;
+	int numeroBingresado = -1;
+	//Resultados
+	int operacionesRealizadas = -1;
+	int suma;
+	int resta;
+	float division;
+	int multiplicacion;
+	long int factorialA;
+	long int factorialB;
 
 	respuestaMenu = 0;
 
-	//Ingreso de operandos
-	printf("Ingrese el operando A: ");
-	scanf("%d", &numeroA);
-
-	printf("Ingrese el operando B: ");
-	scanf("%d", &numeroB);
-
 	//Menú de opciones
-	while (respuestaMenu != 6)
+	while (respuestaMenu != 5)
 	{
 		respuestaMenu = MostrarMenu();
 
 		switch (respuestaMenu)
 		{
-			case SUMA:
-				SumaOperandos(numeroA , numeroB);
+			case 1:
+				numeroA = getInt("Ingrese el operando A:");
+				numeroAingresado = 0;
+				operacionesRealizadas = -1;
 				break;
 
-			case RESTA:
-				RestaOperandos(numeroA , numeroB);
+			case 2:
+				numeroB = getInt("Ingrese el operando B:");
+				numeroBingresado = 0;
+				operacionesRealizadas = -1;
 				break;
 
-			case DIVISION:
-				DivisionOperandos(numeroA , numeroB);
+			case 3:
+				if(numeroAingresado == 0 && numeroBingresado == 0)
+				{
+					suma = SumaOperandos(numeroA , numeroB);
+					resta = RestaOperandos(numeroA , numeroB);
+					if(numeroB != 0)
+					{
+						division = DivisionOperandos(numeroA , numeroB);
+					}
+					multiplicacion = MultiplicacionOperandos(numeroA , numeroB);
+					factorialA = FactorialOperandos(numeroA);
+					factorialB = FactorialOperandos(numeroB);
+					operacionesRealizadas = 0;
+					printf("\nCalculos realizados.\n");
+				}	else	{
+					printf("\nDebe ingresar los operandos primero.\n");
+				}
 				break;
 
-			case MULTIPLICACION:
-				MultiplicacionOperandos(numeroA , numeroB);
-				break;
-
-			case FACTORIAL:
-				FactorialOperandos(numeroA , numeroB);
+			case 4:
+				if(operacionesRealizadas==-1)
+				{
+					printf("Debe realizar las operaciones primero.\n");
+				}	else	{
+					if(numeroB==0)
+					{
+						imprimirResultadosSinDivision(suma,resta,multiplicacion,factorialA,factorialB);
+					}	else	{
+						imprimirResultados(suma,resta,division,multiplicacion,factorialA,factorialB);
+					}
+				}
 				break;
 		}
 	}
